@@ -19,7 +19,7 @@
     {
         public static void Main(string[] args)
         {
-            NetSpec.World.Run();
+            // NetSpec.World.Run();
 
             // var assemblies = assembly.GetReferencedAssemblies().Select(name => Assembly.Load(name)).ToList();
 

@@ -112,12 +112,6 @@ namespace NetSpec
 
     public partial class NetSpec
     {
-        public static void it(string name, System.Action closure)
-        {
-            Console.WriteLine(name);
-            closure();
-        }
-
         public static Expectation<T> expect<T>(Func<T> expression)
         {
             return new Expectation<T>(new Expression<T>(expression));
@@ -143,29 +137,5 @@ namespace NetSpec
             });
         }
 
-    }
-
-    public partial class NetSpec
-    {
-        public virtual void Spec()
-        {
-
-        }
-    }
-
-    public class World
-    {
-
-        public static void Run()
-        {
-            var assembly = Assembly.GetEntryAssembly();
-            var types = assembly.GetTypes().Where(type => type.GetTypeInfo().IsSubclassOf(typeof(NetSpec))).ToList();
-
-            types.ForEach(type =>
-            {
-                var spec = Activator.CreateInstance(type) as NetSpec;
-                spec.Spec();
-            });
-        }
     }
 }
