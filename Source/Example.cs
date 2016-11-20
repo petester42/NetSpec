@@ -1,11 +1,10 @@
 using System;
-using NetSpec.Hooks;
 
 namespace NetSpec
 {
     public sealed class Example : IEquatable<Example>
     {
-        //TODO: move this somewhere
+        //TODO: move this to a global variable?
         private static int numberOfExamplesRun = 0;
 
         public bool isSharedExample = false;

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NetSpec.Configuration
+namespace NetSpec
 {
     public sealed class Configuration
     {
@@ -72,5 +72,4 @@ namespace NetSpec.Configuration
             suiteHooks.appendAfter(closure);
         }
     }
-
 }

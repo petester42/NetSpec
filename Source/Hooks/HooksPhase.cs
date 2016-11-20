@@ -1,4 +1,4 @@
-namespace NetSpec.Hooks
+namespace NetSpec
 {
     internal enum HooksPhase
     {

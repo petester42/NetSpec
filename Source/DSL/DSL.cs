@@ -1,10 +1,10 @@
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace NetSpec.DSL
+namespace NetSpec
 {
-    //TODO: revisit default params
     public partial class NetSpec
     {
         public void beforeSuite(Action closure)
@@ -19,22 +19,22 @@ namespace NetSpec.DSL
 
         public void sharedExamples(string name, Action closure)
         {
-            World.sharedWorld.sharedExamples(name, closure: { (NSDictionary) in closure() });
+            World.sharedWorld.sharedExamples(name, closure: (function) => closure());
         }
 
-        public void sharedExamples(string name, closure: @escaping SharedExampleClosure)
+        public void sharedExamples(string name, Action<Func<Dictionary<string, string>>> closure)
         {
             World.sharedWorld.sharedExamples(name, closure: closure);
         }
 
-        public void describe(string description, FilterFlags flags, Action closure)
+        public void describe(string description, Action closure, FilterFlags flags = null)
         {
-            World.sharedWorld.describe(description, flags: flags, closure: closure)
+            World.sharedWorld.describe(description, flags: DefaultFlags(flags), closure: closure);
         }
 
-        public void context(string description, FilterFlags flags, Action closure)
+        public void context(string description, Action closure, FilterFlags flags = null)
         {
-            World.sharedWorld.context(description, flags: flags, closure: closure);
+            World.sharedWorld.context(description, flags: DefaultFlags(flags), closure: closure);
         }
 
         public void beforeEach(Action closure)
@@ -57,21 +57,19 @@ namespace NetSpec.DSL
             World.sharedWorld.afterEach(closure: closure);
         }
 
-
-        public void it(string description, FilterFlags flags, [CallerFilePath] string file = null, [CallerLineNumber] uint line = 0, Action closure = null)
+        public void it(string description, Action closure, FilterFlags flags = null, [CallerFilePath] string file = null, [CallerLineNumber] uint line = 0)
         {
-            World.sharedWorld.it(description, flags: flags, file: file, line: line, closure: closure);
+            World.sharedWorld.it(description, flags: DefaultFlags(flags), file: file, line: line, closure: closure);
         }
 
-
-        public void itBehavesLike(string name, FilterFlags flags, [CallerFilePath] string file = null, [CallerLineNumber] uint line = 0)
+        public void itBehavesLike(string name, FilterFlags flags = null, [CallerFilePath] string file = null, [CallerLineNumber] uint line = 0)
         {
-            itBehavesLike(name, flags: flags, file: file, line: line, sharedExampleContext: { return [:] });
+            itBehavesLike(name, flags: DefaultFlags(flags), file: file, line: line, sharedExampleContext: () => new Dictionary<string, string>());
         }
 
-        public void itBehavesLike(string name, FilterFlags flags, [CallerFilePath] string file = null, [CallerLineNumber] uint line = 0, sharedExampleContext: @escaping SharedExampleContext)
+        public void itBehavesLike(string name, Func<Dictionary<string, string>> sharedExampleContext, FilterFlags flags, [CallerFilePath] string file = null, [CallerLineNumber] uint line = 0)
         {
-            World.sharedWorld.itBehavesLike(name, sharedExampleContext: sharedExampleContext, flags: flags, file: file, line: line);
+            World.sharedWorld.itBehavesLike(name, sharedExampleContext: sharedExampleContext, flags: DefaultFlags(flags), file: file, line: line);
         }
 
         public void pending(string description, Action closure)
@@ -79,36 +77,44 @@ namespace NetSpec.DSL
             World.sharedWorld.pending(description, closure: closure);
         }
 
-        public void xdescribe(string description, FilterFlags flags, Action closure)
+        public void xdescribe(string description, Action closure, FilterFlags flags = null)
         {
-            World.sharedWorld.xdescribe(description, flags: flags, closure: closure);
+            World.sharedWorld.xdescribe(description, flags: DefaultFlags(flags), closure: closure);
         }
 
-        public void xcontext(string description, FilterFlags flags, Action closure)
+        public void xcontext(string description, Action closure, FilterFlags flags = null)
         {
-            xdescribe(description, flags: flags, closure: closure);
+            xdescribe(description, flags: DefaultFlags(flags), closure: closure);
         }
 
-        public void xit(string description, FilterFlags flags, [CallerFilePath] string file = null, [CallerLineNumber] uint line = 0, Action closure = null)
+        public void xit(string description, Action closure, FilterFlags flags = null, [CallerFilePath] string file = null, [CallerLineNumber] uint line = 0)
         {
-            World.sharedWorld.xit(description, flags: flags, file: file, line: line, closure: closure);
+            World.sharedWorld.xit(description, flags: DefaultFlags(flags), file: file, line: line, closure: closure);
         }
 
-        public void fdescribe(string description, FilterFlags flags, Action closure = null)
+        public void fdescribe(string description, Action closure, FilterFlags flags = null)
         {
-            World.sharedWorld.fdescribe(description, flags: flags, closure: closure);
+            World.sharedWorld.fdescribe(description, flags: DefaultFlags(flags), closure: closure);
         }
 
-
-        public void fcontext(string description, FilterFlags flags, Action closure = null)
+        public void fcontext(string description, Action closure, FilterFlags flags = null)
         {
-            fdescribe(description, flags: flags, closure: closure);
+            fdescribe(description, flags: DefaultFlags(flags), closure: closure);
         }
 
-
-        public void fit(string description, FilterFlags flags, [CallerFilePath] string file = null, [CallerLineNumber] uint line = 0, Action closure = null)
+        public void fit(string description, Action closure, FilterFlags flags = null, [CallerFilePath] string file = null, [CallerLineNumber] uint line = 0)
         {
-            World.sharedWorld.fit(description, flags: flags, file: file, line: line, closure: closure);
+            World.sharedWorld.fit(description, flags: DefaultFlags(flags), file: file, line: line, closure: closure);
+        }
+
+        private FilterFlags DefaultFlags(FilterFlags flags)
+        {
+            if (flags == null)
+            {
+                return new FilterFlags();
+            }
+
+            return flags;
         }
     }
 }

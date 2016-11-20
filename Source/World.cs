@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using NetSpec.Hooks;
 
 namespace NetSpec
 {
@@ -18,7 +17,7 @@ namespace NetSpec
 
         private Dictionary<string, Action<Func<Dictionary<string, string>>>> sharedExamples = new Dictionary<string, Action<Func<Dictionary<string, string>>>>();
 
-        private Configuration.Configuration configuration = new Configuration.Configuration();
+        private Configuration configuration = new Configuration();
 
         private bool isConfigurationFinalized = false;
 
@@ -53,7 +52,7 @@ namespace NetSpec
             }
         }
 
-        internal void configure(Action<Configuration.Configuration> closure)
+        internal void configure(Action<Configuration> closure)
         {
             //TODO: fix assert message to make sense in c#
             Debug.Assert(!isConfigurationFinalized,
@@ -66,8 +65,7 @@ namespace NetSpec
             isConfigurationFinalized = true;
         }
 
-        //TODO: make Object a class Object
-        internal ExampleGroup rootExampleGroupForSpecClass(Object cls)
+        internal ExampleGroup rootExampleGroupForSpecClass(Type cls)
         {
             var name = cls.ToString();
 
@@ -84,8 +82,7 @@ namespace NetSpec
             }
         }
 
-        //TODO: make Object a class Object
-        internal List<Example> examples(object specClass)
+        internal List<Example> examples(Type specClass)
         {
             // 1. Grab all included examples.
             var included = includedExamples;
@@ -93,7 +90,6 @@ namespace NetSpec
             var spec = rootExampleGroupForSpecClass(specClass).examples.Where(x => included.Contains(x));
             // 3. Remove all excluded examples.
             return spec.Where(example => !this.configuration.exclusionFilters.Aggregate(false, (a, b) => a || b(example))).ToList();
-
         }
 
         internal void registerSharedExample(string name, Action<Func<Dictionary<string, string>>> closure)
@@ -212,18 +208,6 @@ namespace NetSpec
                 ErrorUtility.raiseError($"No shared example named '{name}' has been registered. Registered shared examples: '{keys}'");
             }
         }
-
-        // public static void Run()
-        // {
-        //     var assembly = Assembly.GetEntryAssembly();
-        //     var types = assembly.GetTypes().Where(type => type.GetTypeInfo().IsSubclassOf(typeof(NetSpec))).ToList();
-
-        //     types.ForEach(type =>
-        //     {
-        //         var spec = Activator.CreateInstance(type) as NetSpec;
-        //         spec.Spec();
-        //     });
-        // }
     }
 }
 

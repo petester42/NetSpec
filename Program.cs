@@ -1,30 +1,22 @@
-﻿namespace ConsoleApplication
-{
-    public class TestSpec : NetSpec.NetSpec
-    {
-        public override void Spec()
-        {
-            it("is like", () =>
-            {
-                it("will do", () =>
-                {
-                    expect(() => "test").to(equal("test"));
-                    expect(() => "test").to(equal("3"));
-                });
-            });
-        }
-    }
+﻿using System;
+using System.Linq;
+using System.Reflection;
 
+namespace ConsoleApplication
+{
     public class Program
     {
         public static void Main(string[] args)
         {
-            // NetSpec.World.Run();
+            var assembly = Assembly.GetEntryAssembly();
+            var types = assembly.GetTypes().Where(type => type.GetTypeInfo().IsSubclassOf(typeof(NetSpec.NetSpec))).ToList();
 
-            // var assemblies = assembly.GetReferencedAssemblies().Select(name => Assembly.Load(name)).ToList();
-
-            // var x = new TestSpec();
-            // x.Spec();
+            types.ForEach(type =>
+            {
+                var spec = Activator.CreateInstance(type) as NetSpec.NetSpec;
+                
+                spec.Run();
+            });
         }
     }
 }
