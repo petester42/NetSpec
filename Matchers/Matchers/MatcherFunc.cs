@@ -1,57 +1,66 @@
+using System;
+
 namespace NetSpec.Matchers
 {
-    public struct MatcherFunc<T> : Matcher
+    public class MatcherFunc<T> : Matcher<T>
     {
-        public let matcher: (Expression<T>, FailureMessage) throws -> Bool
+        public Func<Expression<T>, FailureMessage, bool> matcher;
 
-        public init(_ matcher: @escaping (Expression<T>, FailureMessage) throws -> Bool)
+        public MatcherFunc(Func<Expression<T>, FailureMessage, bool> matcher)
         {
-            self.matcher = matcher
+            this.matcher = matcher;
         }
 
-        public func matches(_ actualExpression: Expression<T>, failureMessage: FailureMessage) throws -> Bool {
-        return try matcher(actualExpression, failureMessage)
+        public bool matches(Expression<T> actualExpression, FailureMessage failureMessage)
+        {
+            return matcher(actualExpression, failureMessage);
         }
 
-    public func doesNotMatch(_ actualExpression: Expression<T>, failureMessage: FailureMessage) throws -> Bool {
-        return try !matcher(actualExpression, failureMessage)
+        public bool doesNotMatch(Expression<T> actualExpression, FailureMessage failureMessage)
+        {
+            return !matcher(actualExpression, failureMessage);
+        }
     }
-}
 
-
-public struct NonNilMatcherFunc<T> : Matcher
-{
-    public let matcher: (Expression<T>, FailureMessage) throws -> Bool
-
-    public init(_ matcher: @escaping (Expression<T>, FailureMessage) throws -> Bool)
+    public class NonNilMatcherFunc<T> : Matcher<T>
     {
-        self.matcher = matcher
-    }
+        public Func<Expression<T>, FailureMessage, bool> matcher;
 
-    public func matches(_ actualExpression: Expression<T>, failureMessage: FailureMessage) throws -> Bool {
-        let pass = try matcher(actualExpression, failureMessage)
-        if try attachNilErrorIfNeeded(actualExpression, failureMessage: failureMessage)
-    {
-        return false
+        public NonNilMatcherFunc(Func<Expression<T>, FailureMessage, bool> matcher)
+        {
+            this.matcher = matcher;
         }
-        return pass
-}
 
-public func doesNotMatch(_ actualExpression: Expression<T>, failureMessage: FailureMessage) throws -> Bool {
-        let pass = try !matcher(actualExpression, failureMessage)
-        if try attachNilErrorIfNeeded(actualExpression, failureMessage: failureMessage)
-{
-    return false
-        }
-        return pass
-    }
+        public bool matches(Expression<T> actualExpression, FailureMessage failureMessage)
+        {
+            var pass = matcher(actualExpression, failureMessage);
 
-    internal func attachNilErrorIfNeeded(_ actualExpression: Expression<T>, failureMessage: FailureMessage) throws -> Bool {
-        if try actualExpression.evaluate() == nil {
-            failureMessage.postfixActual = " (use beNil() to match nils)"
-            return true
+            if (attachNilErrorIfNeeded(actualExpression, failureMessage: failureMessage))
+            {
+                return false;
+            }
+            return pass;
         }
-        return false
+
+        public bool doesNotMatch(Expression<T> actualExpression, FailureMessage failureMessage)
+        {
+            var pass = !matcher(actualExpression, failureMessage);
+
+            if (attachNilErrorIfNeeded(actualExpression, failureMessage: failureMessage))
+            {
+                return false;
+            }
+            return pass;
+        }
+
+        internal bool attachNilErrorIfNeeded(Expression<T> actualExpression, FailureMessage failureMessage)
+        {
+            if (actualExpression.evaluate() == null)
+            {
+                failureMessage.postfixActual = " (use beNil() to match nils)";
+                return true;
+            }
+            return false;
+        }
     }
-}
 }

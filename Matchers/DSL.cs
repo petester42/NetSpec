@@ -1,60 +1,69 @@
-namespace NetSpec.Matchers {
-public struct MatcherFunc<T>: Matcher {
-    public let matcher: (Expression<T>, FailureMessage) throws -> Bool
 
-    public init(_ matcher: @escaping (Expression<T>, FailureMessage) throws -> Bool) {
-        self.matcher = matcher
-    }
+using System;
+using System.Runtime.CompilerServices;
+using NetSpec.Matchers;
 
-    public func matches(_ actualExpression: Expression<T>, failureMessage: FailureMessage) throws -> Bool {
-        return try matcher(actualExpression, failureMessage)
-    }
+namespace NetSpec
+{
+    /// Make an expectation on a given actual value. The value given is lazily evaluated.
 
-    public func doesNotMatch(_ actualExpression: Expression<T>, failureMessage: FailureMessage) throws -> Bool {
-        return try !matcher(actualExpression, failureMessage)
-    }
-}
-
-/// A convenience API to build matchers that don't need special negation
-/// behavior. The toNot() behavior is the negation of to().
-///
-/// Unlike MatcherFunc, this will always fail if an expectation contains nil.
-/// This applies regardless of using to() or toNot().
-///
-/// You may use this when implementing your own custom matchers.
-///
-/// Use the Matcher protocol instead of this type to accept custom matchers as
-/// input parameters.
-/// @see allPass for an example that uses accepts other matchers as input.
-public struct NonNilMatcherFunc<T>: Matcher {
-    public let matcher: (Expression<T>, FailureMessage) throws -> Bool
-
-    public init(_ matcher: @escaping (Expression<T>, FailureMessage) throws -> Bool) {
-        self.matcher = matcher
-    }
-
-    public func matches(_ actualExpression: Expression<T>, failureMessage: FailureMessage) throws -> Bool {
-        let pass = try matcher(actualExpression, failureMessage)
-        if try attachNilErrorIfNeeded(actualExpression, failureMessage: failureMessage) {
-            return false
+    public partial class NetSpec
+    {
+        public Expectation<T> expect<T>(Func<T> expression, [CallerFilePath] string file = null, [CallerLineNumber] uint line = 0)
+        {
+            return new Expectation<T>(new Expression<T>(expression, new SourceLocation(file: file, line: line), isClosure: true));
         }
-        return pass
-    }
 
-    public func doesNotMatch(_ actualExpression: Expression<T>, failureMessage: FailureMessage) throws -> Bool {
-        let pass = try !matcher(actualExpression, failureMessage)
-        if try attachNilErrorIfNeeded(actualExpression, failureMessage: failureMessage) {
-            return false
-        }
-        return pass
-    }
+        /// Make an expectation on a given actual value. The closure is lazily invoked.
+        // public Expectation<T> expect<T>([CallerFilePath] string file = null, [CallerLineNumber] uint line = 0, Func<T> expression = null)
+        // {
+        //     return new Expectation<T>(new Expression<T>(expression, new SourceLocation(file: file, line: line), isClosure: true));
+        // }
 
-    internal func attachNilErrorIfNeeded(_ actualExpression: Expression<T>, failureMessage: FailureMessage) throws -> Bool {
-        if try actualExpression.evaluate() == nil {
-            failureMessage.postfixActual = " (use beNil() to match nils)"
-            return true
+        /// Always fails the test with a message and a specified location.
+        public void fail(string message, SourceLocation location)
+        {
+            var handler = NimbleEnvironment.activeInstance.assertionHandler;
+            handler.assert(false, message: new FailureMessage(stringValue: message), location: location);
         }
-        return false
+
+        /// Always fails the test with a message.
+        public void fail(string message, [CallerFilePath] string file = null, [CallerLineNumber] uint line = 0)
+        {
+            fail(message, location: new SourceLocation(file: file, line: line));
+        }
+
+        /// Always fails the test.
+        public void fail([CallerFilePath] string file = null, [CallerLineNumber] uint line = 0)
+        {
+            fail("fail() always fails", file: file, line: line);
+        }
+
+        /// Like Swift's precondition(), but raises NSExceptions instead of sigaborts
+        internal void nimblePrecondition(Func<bool> expr, Func<string> name, Func<string> message, [CallerFilePath] string file = null, [CallerLineNumber] uint line = 0)
+        {
+            var result = expr();
+            if (!result)
+            {
+                throw new Exception($"{name()} - {message()}");
+                // preconditionFailure("\(name()) - \(message())", file: file, line: line)
+            }
+        }
+
+        internal void internalError(string msg, [CallerFilePath] string file = null, [CallerLineNumber] uint line = 0)
+        {
+            //TODO: fix message
+            throw new Exception(
+                $"Nimble Bug Found: {msg} at {file}:{line}.\n" +
+                "Please file a bug to Nimble: https://github.com/Quick/Nimble/issues with the " +
+                "code snippet that caused this error."
+            );
+
+            // fatalError(
+            //             $"Nimble Bug Found: {msg} at {file}:{line}.\n" +
+            //             "Please file a bug to Nimble: https://github.com/Quick/Nimble/issues with the " +
+            //             "code snippet that caused this error."
+            //         );
+        }
     }
-}
 }
