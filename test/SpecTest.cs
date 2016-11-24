@@ -17,7 +17,7 @@ namespace Tests
             {
                 it("is a test a1", () =>
                 {
-                    expect(() => "test a1").to(equal("test b"));
+                    expect(() => test).to(equal("test"));
 
                     var a = new List<string>
                     {

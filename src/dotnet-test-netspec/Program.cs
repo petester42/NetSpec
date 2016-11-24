@@ -8,6 +8,8 @@ namespace ConsoleApplication
     {
         public static int Main(string[] args)
         {
+            Console.WriteLine($"Hello : {args}");
+            
             using (var program = new Program())
             {
                 return program.Run(args);
@@ -18,6 +20,7 @@ namespace ConsoleApplication
         {
             try
             {
+                Tests();
                 return 0;
             }
             catch

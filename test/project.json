@@ -2,9 +2,9 @@
   "buildOptions": {
     "emitEntryPoint": false
   },
-  "testRunner": "Source",
+  "testRunner": "netspec",
   "dependencies": {
-    "Source": {
+    "dotnet-test-netspec": {
       "version": "*",
       "target": "project"
     }

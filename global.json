@@ -1,7 +1,7 @@
 {
     "projects": [
-        "Source",
-        "Tests"
+        "src",
+        "test"
     ],
     "sdk": {
         "version": "1.0.1"

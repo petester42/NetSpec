@@ -4,13 +4,11 @@
   ],
   "title": "NetSpec",
   "description": "An Rspec implementation for dotnet core.",
-  "name": "dotnet-test-netspec",
+  "name": "netspec",
   "developmentDependency": true,
   "version": "1.0.0-*",
   "buildOptions": {
-    "warningsAsErrors": true,
-    "emitEntryPoint": true,
-    "preserveCompilationContext": true
+    "warningsAsErrors": true
   },
   "packOptions": {
     "projectUrl": "https://github.com/NetSpec/NetSpec",
@@ -23,22 +21,11 @@
     },
     "summary": "An Rspec implementation for dotnet core."
   },
-  "dependencies": {
-    "Microsoft.Extensions.Testing.Abstractions": "1.0.0-preview2-1-003177"
-  },
-  // "frameworks": {
-  //   "netstandard1.6": {
-  //     "dependencies": {
-  //       "NETStandard.Library": "1.6.0"
-  //     }
-  //   }
+  "dependencies": {},
   "frameworks": {
-    "netcoreapp1.0": {
+    "netstandard1.6": {
       "dependencies": {
-        "Microsoft.NETCore.App": {
-          "type": "platform",
-          "version": "1.0.1"
-        }
+        "NETStandard.Library": "1.6.0"
       }
     }
   }
