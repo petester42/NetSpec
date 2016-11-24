@@ -1,0 +1,45 @@
+{
+  "authors": [
+    "Pierre-Marc Airoldi"
+  ],
+  "title": "NetSpec",
+  "description": "An Rspec implementation for dotnet core.",
+  "name": "dotnet-test-netspec",
+  "developmentDependency": true,
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "warningsAsErrors": true,
+    "emitEntryPoint": true,
+    "preserveCompilationContext": true
+  },
+  "packOptions": {
+    "projectUrl": "https://github.com/NetSpec/NetSpec",
+    "iconUrl": "",
+    "licenseUrl": "",
+    "requireLicenseAcceptance": false,
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/NetSpec/NetSpec"
+    },
+    "summary": "An Rspec implementation for dotnet core."
+  },
+  "dependencies": {
+    "Microsoft.Extensions.Testing.Abstractions": "1.0.0-preview2-1-003177"
+  },
+  // "frameworks": {
+  //   "netstandard1.6": {
+  //     "dependencies": {
+  //       "NETStandard.Library": "1.6.0"
+  //     }
+  //   }
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.1"
+        }
+      }
+    }
+  }
+}
