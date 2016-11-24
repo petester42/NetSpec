@@ -3,21 +3,24 @@
   "authors": [
     "Pierre-Marc Airoldi"
   ],
-  "title": "NetSpec .NET Core Runner",
-  "name": "dotnet-test-netspec",
+  "title": "NetSpec .NET Core Runner Tests",
+  "name": "dotnet-test-netspec.test",
   "version": "1.0.0-*",
   "buildOptions": {
-    "emitEntryPoint": true,
     "preserveCompilationContext": true,
     "warningsAsErrors": true
   },
   "dependencies": {
-    "Microsoft.Extensions.Testing.Abstractions": "1.0.0-preview2-1-003177",
     "netspec": {
+      "version": "*",
+      "target": "project"
+    },
+    "dotnet-test-netspec": {
       "version": "*",
       "target": "project"
     }
   },
+  "testRunner": "netspec",
   "frameworks": {
     "netcoreapp1.0": {
       "dependencies": {

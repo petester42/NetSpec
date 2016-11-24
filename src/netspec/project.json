@@ -1,12 +1,12 @@
 {
+  "copyright": "Copyright (C) 2016 Pierre-Marc Airoldi",
   "authors": [
     "Pierre-Marc Airoldi"
   ],
   "title": "NetSpec",
-  "description": "An Rspec implementation for dotnet core.",
   "name": "netspec",
-  "developmentDependency": true,
   "version": "1.0.0-*",
+  "description": "An Rspec implementation for dotnet core.",
   "buildOptions": {
     "warningsAsErrors": true
   },
