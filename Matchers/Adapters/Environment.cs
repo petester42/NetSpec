@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace NetSpec.Matchers
 {
 
@@ -5,44 +7,63 @@ namespace NetSpec.Matchers
     /// class' existance
     internal class NimbleEnvironment
     {
-        static var activeInstance: NimbleEnvironment {
-        get {
-            let env = Thread.current.threadDictionary["NimbleEnvironment"]
-            if let env = env as? NimbleEnvironment {
-                return env
-    } else {
-                let newEnv = NimbleEnvironment()
-                self.activeInstance = newEnv
-                return newEnv
-}
-        }
-        set {
-            Thread.current.threadDictionary["NimbleEnvironment"] = newValue
-        }
-    }
+        private AssertionHandler _assertionHandler;
+        private static Dictionary<string, NimbleEnvironment> environments = new Dictionary<string, NimbleEnvironment>();
 
-    // TODO: eventually migrate the global to this environment value
-    var assertionHandler: AssertionHandler {
-        get { return NimbleAssertionHandler }
-        set { NimbleAssertionHandler = newValue }
-    }
+        public static NimbleEnvironment activeInstance
+        {
+            get
+            {
+                try
+                {
+                    var env = environments["NetSpecEnvironment"];
 
-    var suppressTVOSAssertionWarning: Bool = false
-    var awaiter: Awaiter
-
-    init()
-{
-    let timeoutQueue: DispatchQueue
-        if #available(OSX 10.10, *) {
-            timeoutQueue = DispatchQueue.global(qos: .userInitiated)
-        } else {
-            timeoutQueue = DispatchQueue.global(priority: .high)
+                    return env;
+                }
+                catch
+                {
+                    var newEnv = new NimbleEnvironment();
+                    activeInstance = newEnv;
+                    return newEnv;
+                }
+            }
+            set
+            {
+                environments["NetSpecEnvironment"] = value;
+            }
         }
 
-        awaiter = Awaiter(
-            waitLock: AssertionWaitLock(),
-            asyncQueue: .main,
-            timeoutQueue: timeoutQueue)
+        // TODO: eventually migrate the global to this environment value
+        public AssertionHandler assertionHandler
+        {
+            get
+            {
+                return _assertionHandler;
+            }
+            set
+            {
+                _assertionHandler = value;
+            }
+        }
+
+        // Awaiter awaiter;
+
+        private NimbleEnvironment()
+        {
+            _assertionHandler = new NetSpecAssertionHandler();
+            
+            //TODO: fix awaiter
+            //     let timeoutQueue: DispatchQueue
+            //     if #available(OSX 10.10, *) {
+            //     timeoutQueue = DispatchQueue.global(qos: .userInitiated)
+            //     } else {
+            //     timeoutQueue = DispatchQueue.global(priority: .high)
+            // }
+
+            // awaiter = Awaiter(
+            //     waitLock: AssertionWaitLock(),
+            //     asyncQueue: .main,
+            //     timeoutQueue: timeoutQueue)
+        }
     }
-}
 }

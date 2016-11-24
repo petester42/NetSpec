@@ -43,7 +43,7 @@ namespace NetSpec.Matchers
 
                 if (string.IsNullOrEmpty(msg.actualValue))
                 {
-                    msg.actualValue = $"<{expression.evaluate().ToString()}?";
+                    msg.actualValue = $"<{expression.evaluate().ToString()}>";
                 }
 
                 return Tuple.Create(pass, msg);
@@ -67,7 +67,7 @@ namespace NetSpec.Matchers
                 
                 if (string.IsNullOrEmpty(msg.actualValue))
                 {
-                    msg.actualValue = $"<{expression.evaluate().ToString()}?";
+                    msg.actualValue = $"<{expression.evaluate().ToString()}>";
                 }
 
                 return Tuple.Create(pass, msg);
