@@ -1,5 +1,4 @@
-
-using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace Tests
 {
@@ -18,21 +17,55 @@ namespace Tests
             {
                 it("is a test a1", () =>
                 {
-                    Debug.WriteLine("test a1");
-                    Debug.WriteLine($"{test}");
+                    expect(() => "test a1").to(equal("test b"));
+
+                    var a = new List<string>
+                    {
+                        "a", "b"
+                    };
+
+                    var b = new List<string>
+                    {
+                        "C", "D"
+                    };
+
+                    expect(() => a).to(equal(b));
+
                 });
 
                 it("is a test a2", () =>
                 {
-                    Debug.WriteLine("test a2");
-                    Debug.WriteLine($"{test}");
+                    expect(() => "test a2").to(equal("test a2"));
+
+                    var a = new Dictionary<string, string>
+                    {
+                        {"a", "b"}
+                    };
+
+                    var b = new Dictionary<string, string>
+                    {
+                        {"C", "D"}
+                    };
+
+                    expect(() => a).to(equal(b));
                 });
             });
 
             it("is like a test b", () =>
             {
-                Debug.WriteLine("test b1");
-                Debug.WriteLine($"{test}");
+                expect(() => "test b").to(equal("test b"));
+
+                var a = new string[]
+                    {
+                        "a", "b"
+                    };
+
+                var b = new string[]
+                    {
+                        "c", "D"
+                    };
+
+                expect(() => a).to(equal(b));
             });
         }
     }
