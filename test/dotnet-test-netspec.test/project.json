@@ -13,11 +13,11 @@
   "dependencies": {
     "netspec": {
       "version": "*",
-      "target": "project"
+      "target": "package"
     },
     "dotnet-test-netspec": {
       "version": "*",
-      "target": "project"
+      "target": "package"
     }
   },
   "testRunner": "netspec",
