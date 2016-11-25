@@ -18,9 +18,9 @@ matrix:
         - ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/
 install:
   - dotnet restore "src/netspec"
-	- dotnet pack "src/netspec" --configuration Release --output "artifacts/packages"
-	- dotnet restore "src/dotnet-test-netspec" -s "artifacts/packages"
-	- dotnet pack "src/dotnet-test-netspec" --configuration Release --output "artifacts/packages"
-	- dotnet restore "test" -s "artifacts/packages"
+  - dotnet pack "src/netspec" --configuration Release --output "artifacts/packages"
+  - dotnet restore "src/dotnet-test-netspec" -s "artifacts/packages"
+  - dotnet pack "src/dotnet-test-netspec" --configuration Release --output "artifacts/packages"
+  - dotnet restore "test" -s "artifacts/packages"
 script:
   - dotnet test
