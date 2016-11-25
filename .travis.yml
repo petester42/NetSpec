@@ -13,6 +13,9 @@ matrix:
       dotnet: 1.0.0-preview2-003131
       mono: none
       before_install: 
+        - brew update
+        - brew install openssl
+        - mkdir -p /usr/local/lib
         - ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/
         - ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/
 install:
