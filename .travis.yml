@@ -5,14 +5,19 @@ matrix:
     - os: linux # Ubuntu 14.04
       dist: trusty
       sudo: required
-      dotnet: 1.0.0-preview2-003131
       mono: none
+      dotnet: 1.0.0-preview2-003131
+      mono: latest
         
     - os: osx # OSX 10.11
       osx_image: xcode8
-      dotnet: 1.0.0-preview2-003131
       mono: none
+      dotnet: 1.0.0-preview2-003131
+      mono: latest
       before_install: 
+        - brew update
+        - brew install openssl
+        - mkdir -p /usr/local/lib
         - ln -s /usr/local/opt/openssl/lib/libcrypto.1.0.0.dylib /usr/local/lib/
         - ln -s /usr/local/opt/openssl/lib/libssl.1.0.0.dylib /usr/local/lib/
 install:
