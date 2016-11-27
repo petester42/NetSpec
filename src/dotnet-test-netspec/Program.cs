@@ -8,8 +8,12 @@ namespace ConsoleApplication
     {
         public static int Main(string[] args)
         {
-            Console.WriteLine($"Hello : {args}");
-            
+            for (var i = 0; i < args.Count(); ++i)
+            {
+                var arg = args[i];
+                Console.WriteLine($"{i} : {arg}");
+            }
+
             using (var program = new Program())
             {
                 return program.Run(args);

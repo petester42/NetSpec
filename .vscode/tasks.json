@@ -1,16 +1,18 @@
 {
     "version": "0.1.0",
-    "command": "dotnet",
+    "command": "make",
     "isShellCommand": true,
     "args": [],
     "tasks": [
         {
             "taskName": "build",
-            "args": [
-                "${workspaceRoot}/project.json"
-            ],
-            "isBuildCommand": true,
-            "problemMatcher": "$msCompile"
+            "args": [],
+            "isBuildCommand": true
+        },
+        {
+            "taskName": "tests",
+            "args": [],
+            "isTestCommand": true
         }
     ]
 }

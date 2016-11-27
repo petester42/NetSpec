@@ -2,11 +2,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            "name": "Run dotnet-test-netspec",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/bin/Debug/netcoreapp1.0/NetSpec.dll",
+            "program": "${workspaceRoot}/src/dotnet-test-netspec/bin/Debug/netcoreapp1.0/dotnet-test-netspec.dll",
             "args": [],
             "cwd": "${workspaceRoot}",
             "externalConsole": false,

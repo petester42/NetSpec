@@ -12,7 +12,7 @@
     "warningsAsErrors": true
   },
   "dependencies": {
-    "Microsoft.Extensions.Testing.Abstractions": "1.0.0-preview2-1-003177",
+    // "Microsoft.Extensions.Testing.Abstractions": "1.0.0-preview2-003121",
     "netspec": {
       "version": "*",
       "target": "package"
@@ -22,11 +22,10 @@
     "netcoreapp1.0": {
       "dependencies": {
         "Microsoft.NETCore.App": {
-          "type": "platform",
-          "version": "1.0.1"
+          "version": "1.0.0",
+          "type": "platform"
         }
-      },
-      "imports": "dnxcore50"
+      }
     }
   }
 }
