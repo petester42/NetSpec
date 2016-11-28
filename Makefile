@@ -1,5 +1,3 @@
-TEST_PROJECTS = $(sort $(dir $(wildcard test/*/)))
-
 pack: 
 	dotnet restore "src/netspec"
 	dotnet pack "src/netspec" --output "artifacts/packages"

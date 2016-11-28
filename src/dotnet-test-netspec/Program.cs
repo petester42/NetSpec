@@ -35,8 +35,12 @@ namespace ConsoleApplication
 
         private void Tests()
         {
+            Console.WriteLine("Tests");
+
             var assembly = Assembly.GetEntryAssembly();
             var types = assembly.GetTypes().Where(type => type.GetTypeInfo().IsSubclassOf(typeof(NetSpec.NetSpec))).ToList();
+
+            Console.WriteLine("Tests");
 
             types.ForEach(type =>
             {
