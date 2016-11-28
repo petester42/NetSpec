@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -24,7 +25,7 @@ namespace ConsoleApplication
         {
             try
             {
-                Tests();
+                Tests(args[0]);
                 return 0;
             }
             catch
@@ -33,11 +34,14 @@ namespace ConsoleApplication
             }
         }
 
-        private void Tests()
+        private void Tests(string testdll)
         {
             Console.WriteLine("Tests");
 
-            var assembly = Assembly.GetEntryAssembly();
+            var assembyName = Path.GetFileNameWithoutExtension(testdll);
+            
+            var assembly = Assembly.Load(new AssemblyName(assembyName));
+
             var types = assembly.GetTypes().Where(type => type.GetTypeInfo().IsSubclassOf(typeof(NetSpec.NetSpec))).ToList();
 
             Console.WriteLine(types);
@@ -45,7 +49,7 @@ namespace ConsoleApplication
             types.ForEach(type =>
             {
                 Console.WriteLine(type);
-                
+
                 var spec = Activator.CreateInstance(type) as NetSpec.NetSpec;
 
                 spec.Run();
