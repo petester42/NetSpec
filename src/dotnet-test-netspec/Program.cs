@@ -40,10 +40,12 @@ namespace ConsoleApplication
             var assembly = Assembly.GetEntryAssembly();
             var types = assembly.GetTypes().Where(type => type.GetTypeInfo().IsSubclassOf(typeof(NetSpec.NetSpec))).ToList();
 
-            Console.WriteLine("Tests");
+            Console.WriteLine(types);
 
             types.ForEach(type =>
             {
+                Console.WriteLine(type);
+                
                 var spec = Activator.CreateInstance(type) as NetSpec.NetSpec;
 
                 spec.Run();

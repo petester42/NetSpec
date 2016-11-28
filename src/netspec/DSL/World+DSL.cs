@@ -150,7 +150,7 @@ namespace NetSpec
 
         internal static void pending(this World world, string description, Action closure)
         {
-            Debug.WriteLine($"Pending: {description}");
+            Console.WriteLine($"Pending: {description}");
         }
 
         private static string currentPhase(this World world)
