@@ -41,9 +41,9 @@ namespace NetSpec.Matchers
             return new Expression<T>(memoizedExpression: this._expression, location: this.location, withoutCaching: true, isClosure: this.isClosure);
         }
 
-        internal static Func<bool, T> memoizedClosure<T>(Func<T> closure)
+        internal static Func<bool, U> memoizedClosure<U>(Func<U> closure)
         {
-            T cache = default(T);
+            U cache = default(U);
             return withoutCaching =>
             {
                 if (withoutCaching || cache == null)

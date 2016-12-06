@@ -65,7 +65,7 @@ namespace NetSpec
                 lineNumber = this.example.callsite.line;
             }
 
-            Debug.Fail($"{description}, {filePath}, {lineNumber}, {expected}");
+            Console.WriteLine($"{description}, {filePath}, {lineNumber}, {expected}");
             
             //         this.currentSpec.testRun re
             // [currentSpec.testRun recordFailureWithDescription: description
