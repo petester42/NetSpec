@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -17,7 +17,7 @@ namespace NetSpec
             var list = new List<string>();
             var stack = new Stack<Assembly>();
 
-            stack.Push(Assembly.GetEntryAssembly());
+            //stack.Push(Assembly.GetEntryAssembly());
 
             do
             {
@@ -25,13 +25,13 @@ namespace NetSpec
 
                 yield return asm;
 
-                foreach (var reference in asm.GetReferencedAssemblies()) {
-                    if (!list.Contains(reference.FullName))
-                    {
-                        stack.Push(Assembly.Load(reference));
-                        list.Add(reference.FullName);
-                    }
-                }
+                //foreach (var reference in asm.GetReferencedAssemblies()) {
+                //    if (!list.Contains(reference.FullName))
+                //    {
+                //        stack.Push(Assembly.Load(reference));
+                //        list.Add(reference.FullName);
+                //    }
+                //}
             }
             while (stack.Count > 0);
         }

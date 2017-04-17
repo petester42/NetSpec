@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace ConsoleApplication
+namespace DotNetTestNetSpec
 {
     public class Program : IDisposable
     {
